@@ -3,7 +3,7 @@ import { requireUnauth } from "@/lib/auth-utils"
 
 
 const Page = async () => {
-    // await requireUnauth();
+    await requireUnauth();
     return <LoginForm />;
 }
 
