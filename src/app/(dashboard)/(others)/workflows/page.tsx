@@ -1,4 +1,9 @@
-import { WorkflowsContainer, WorkflowsList } from "@/app/features/workflows/components/workflows";
+import {
+    WorkflowsContainer,
+    WorkflowsError,
+    WorkflowsList,
+    WorkflowsLoading
+} from "@/app/features/workflows/components/workflows";
 import { workflowsParamsLoader } from "@/app/features/workflows/server/params-loader";
 import { prefetchWorkflows } from "@/app/features/workflows/server/prefetch";
 import { requireAuth } from "@/lib/auth-utils";
@@ -23,8 +28,8 @@ const Page = async ({ searchParams }: Props) => {
     return (
         <WorkflowsContainer>
             <HydrateClient>
-                <ErrorBoundary fallback={<p>Error!</p>}>
-                    <Suspense fallback={<p>Loading...</p>}>
+                <ErrorBoundary fallback={<WorkflowsError />}>
+                    <Suspense fallback={<WorkflowsLoading />}>
                         <WorkflowsList />
                     </Suspense>
                 </ErrorBoundary>

@@ -1,5 +1,9 @@
 import prisma from "@/lib/db";
-import { createTRPCRouter, premiumProcedure, protectedProcedure } from "@/trpc/init";
+import {
+    createTRPCRouter,
+    premiumProcedure,
+    protectedProcedure
+} from "@/trpc/init";
 import { generateSlug } from "random-word-slugs";
 import { z } from "zod";
 import { PAGINATION } from "@/config/constants";
@@ -52,7 +56,7 @@ export const workflowRouter = createTRPCRouter({
 
     getMany: protectedProcedure
         .input(z.object({
-            page: z.number().default(PAGINATION.DEFAULT_PAGE),
+            page: z.number().min(1).default(PAGINATION.DEFAULT_PAGE),
             pageSize: z.number()
                 .min(PAGINATION.MIN_PAGE_SIZE)
                 .max(PAGINATION.MAX_PAGE_SIZE),

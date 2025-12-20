@@ -295,3 +295,30 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide scrollbars while keeping scroll behavior */
+html,
+body {
+  -ms-overflow-style: none;
+  /* IE/Edge legacy */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE/Edge legacy */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari */
+}
