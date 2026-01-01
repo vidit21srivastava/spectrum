@@ -220,7 +220,7 @@ export const EmptyView = ({ message, onNew }: EmptyViewProps) => {
                 </EmptyMedia>
             </EmptyHeader>
             <EmptyTitle className="text-muted-foreground">
-                No Items
+                No Workflows
             </EmptyTitle>
             {Boolean(message) && (
                 <EmptyDescription>
@@ -230,7 +230,7 @@ export const EmptyView = ({ message, onNew }: EmptyViewProps) => {
             {Boolean(onNew) && (
                 <EmptyContent>
                     <Button onClick={onNew}>
-                        Add Item
+                        Add Workflow
                     </Button>
                 </EmptyContent>
             )}
