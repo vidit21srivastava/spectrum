@@ -1,8 +1,14 @@
 import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
+import { NodeStatus } from "./node-status-indicator";
+import { CheckCircle2Icon, CircleAlertIcon, Loader2Icon } from "lucide-react";
 
-export function BaseNode({ className, ...props }: ComponentProps<"div">) {
+interface BaseNodeProps extends ComponentProps<"div"> {
+  status?: NodeStatus;
+};
+
+export function BaseNode({ className, status, ...props }: BaseNodeProps) {
   return (
     <div
       className={cn(
@@ -19,7 +25,21 @@ export function BaseNode({ className, ...props }: ComponentProps<"div">) {
       )}
       tabIndex={0}
       {...props}
-    />
+    >
+      {props.children}
+      {status === "error" && (
+        <CircleAlertIcon className="absolute right-1 bottom-1 size-2 text-red-700/50 stroke-3" />
+
+      )}
+      {status === "success" && (
+        <CheckCircle2Icon className="absolute right-1 bottom-1 size-2 text-green-700/50 stroke-3" />
+
+      )}
+      {status === "loading" && (
+        <Loader2Icon className="absolute right-0.5 bottom-0.5 size-1.75 text-muted-foreground stroke-3 animate-spin" />
+
+      )}
+    </div>
   );
 }
 

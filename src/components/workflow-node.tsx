@@ -39,12 +39,12 @@ export function WorkflowNode({
                 <NodeToolbar
                     position={Position.Bottom}
                     isVisible
-                    className="max-w-[200px] text-center group">
-                    <p className="font-medium">
+                    className="max-w-[200px] text-center group ">
+                    <div className="font-medium text-xs">
                         {name}
-                    </p>
+                    </div>
                     {description && (
-                        <div className="bg-gray-200 rounded-xl p-2 text-gray-600 text-sm hidden group-hover:block whitespace-normal wrap-break-word">
+                        <div className="bg-gray-200 rounded-xl p-2 text-gray-600 text-xs hidden group-hover:block whitespace-normal wrap-break-word">
                             {description}
                         </div>
                     )}
