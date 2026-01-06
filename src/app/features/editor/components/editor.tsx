@@ -1,7 +1,7 @@
 "use client";
 import { ErrorView, LoadingView } from "@/components/entity-components";
 import { useSuspenseWorkflow } from "../../workflows/hooks/use-workflows";
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import {
     ReactFlow,
     applyNodeChanges,
@@ -22,6 +22,8 @@ import { nodeComponents } from "@/config/node-coponents";
 import { AddNodeButton } from "./add-node-button";
 import { useSetAtom } from "jotai";
 import { editorAtom } from "../store/atoms";
+import { NodeType } from "@/generated/prisma";
+import { ExecuteWorkflowButton } from "./execute-workflow-button";
 
 export const EditorLoading = () => {
     return <LoadingView message="Loading..." />;
@@ -53,6 +55,8 @@ export const Editor = ({ workflowID }: { workflowID: string }) => {
         [],
     );
 
+    const hasManualTrigger = useMemo(() => { return nodes.some((node => node.type === NodeType.MANUAL_TRIGGER)) }, [nodes])
+
     return (
         <div className="size-full">
             <ReactFlow
@@ -72,9 +76,15 @@ export const Editor = ({ workflowID }: { workflowID: string }) => {
                 <Panel position="top-right">
                     <AddNodeButton />
                 </Panel>
-                <Panel position="bottom-center">
+                {hasManualTrigger && (
+                    <Panel position="bottom-center">
+                        <ExecuteWorkflowButton workflowID={workflowID} />
+                    </Panel>
+                )}
+                <Panel position="top-center">
                     <div className="text-center text-sm font-medium text-muted-foreground">
                         Shift + Drag to select multiple nodes.
+                        Backspace to Delete
                     </div>
                 </Panel>
                 <Background />
