@@ -49,3 +49,5 @@ export const topologicalSort = (
     const nodeMap = new Map(nodes.map((n) => [n.id, n]));
     return sortedNodeIDs.map((id) => nodeMap.get(id)!).filter(Boolean); // Non-Null assertion fixed. {!}
 };
+
+// Only edge case is cycle. TODO
