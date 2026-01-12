@@ -44,7 +44,7 @@ export function WorkflowNode({
                         {name}
                     </div>
                     {description && (
-                        <div className="bg-gray-200 rounded-xl p-2 text-gray-600 text-xs hidden group-hover:block whitespace-normal wrap-break-word">
+                        <div className="text-xs bg-muted rounded-xl p-2 text-muted-foreground truncate group-hover:whitespace-normal group-hover:overflow-visible group-hover:wrap-break-word" >
                             {description}
                         </div>
                     )}
