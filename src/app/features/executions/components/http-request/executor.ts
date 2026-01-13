@@ -3,7 +3,11 @@ import { NonRetriableError } from "inngest";
 import ky, { type Options as KyOptions } from "ky";
 import Handlebars from "handlebars";
 
-Handlebars.registerHelper("JSON", (context) => JSON.stringify(context, null, 2));
+Handlebars.registerHelper("JSON", (context) => {
+    const jsonString = JSON.stringify(context, null, 2);
+    const safeString = new Handlebars.SafeString(jsonString);
+    return safeString;
+});
 
 type httpRequestData = {
     variableName: string;
@@ -49,7 +53,7 @@ export const httpRequestExecutor: NodeExecutor<httpRequestData> = async (
             const resolved = Handlebars.compile(data.body || "{}")(context);
             console.log("Body:", { resolved });
             JSON.parse(resolved); //--> to protect from any invalid JSON being passed
-            options.body = data.body;
+            options.body = resolved;
             options.headers = {
                 "Content-Type": "application/json",
             }
