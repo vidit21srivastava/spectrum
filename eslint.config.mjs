@@ -12,8 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    "src/app/features/workflows/hooks/use-workflows.ts"
   ]),
+
 ]);
 
 export default eslintConfig;
