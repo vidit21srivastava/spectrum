@@ -36,7 +36,7 @@ export function BaseNode({ className, status, ...props }: BaseNodeProps) {
 
       )}
       {status === "loading" && (
-        <Loader2Icon className="absolute right-0.5 bottom-0.5 size-1.75 text-muted-foreground stroke-3 animate-spin" />
+        <Loader2Icon className="absolute right-0.5 bottom-0.5 size-1.75 text-blue-700/70 stroke-3 animate-spin" />
 
       )}
     </div>
