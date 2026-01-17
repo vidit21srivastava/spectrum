@@ -50,7 +50,7 @@ export function useNodeStatus({
             )[0]; // first index of the array returned
 
         if (latestMessage?.kind === "data") {
-            setStatus(latestMessage.data.status as NodeStatus);
+            setStatus(latestMessage.data.status as NodeStatus); // --> yet to see
         };
 
     }, [data, nodeID, channel, topic]);

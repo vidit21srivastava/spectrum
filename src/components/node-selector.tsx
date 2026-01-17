@@ -34,8 +34,14 @@ const triggerNodes: NodeTypeOption[] = [
     {
         type: NodeType.MANUAL_TRIGGER,
         label: "Trigger manually",
-        description: "Runs the flow on clicking a button. Good for getting started quickly.",
+        description: "Runs the flow on clicking a button. Good for getting started quickly",
         icon: MousePointer2Icon,
+    },
+    {
+        type: NodeType.GOOGLE_FORM_TRIGGER,
+        label: "Google Form",
+        description: "Runs the flow when a Google Form is submitted",
+        icon: "/googleform.svg",
     },
 ];
 
@@ -128,7 +134,7 @@ export function NodeSelector({
             <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
                 <SheetHeader>
                     <SheetTitle>
-                        What triggers this workflow?
+                        Triggers & Executors
                     </SheetTitle>
                     <SheetDescription>
                         A trigger helps start your workflow.
@@ -151,6 +157,8 @@ export function NodeSelector({
                                                 <Image
                                                     src={Icon}
                                                     alt={nodeType.label}
+                                                    width={20}
+                                                    height={20}
                                                     className="size-5 object-contain rounded-sm"
                                                 />
                                             ) : (
@@ -173,6 +181,7 @@ export function NodeSelector({
                 </div>
                 <Separator />
                 <div>
+
                     {
                         executionNodes.map(
                             (nodeType) => {
@@ -189,6 +198,8 @@ export function NodeSelector({
                                                 <Image
                                                     src={Icon}
                                                     alt={nodeType.label}
+                                                    width={20}
+                                                    height={20}
                                                     className="size-5 object-contain rounded-sm"
                                                 />
                                             ) : (
