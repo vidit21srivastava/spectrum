@@ -11,9 +11,9 @@ Handlebars.registerHelper("JSON", (context) => {
 });
 
 type httpRequestData = {
-    variableName: string;
-    endpoint: string;
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+    variableName?: string;
+    endpoint?: string;
+    method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
     body?: string;
 };
 
@@ -33,39 +33,43 @@ export const httpRequestExecutor: NodeExecutor<httpRequestData> = async (
         })
     );
 
-    if (!data.endpoint) {
-        await publish(
-            httpRequestChannel().status({
-                nodeID,
-                status: "error"
-            })
-        );// could this be done using try-catch?
-        throw new NonRetriableError("HTTP Request Node: No endpoint configured");
-    }
-
-    if (!data.variableName) {
-        await publish(
-            httpRequestChannel().status({
-                nodeID,
-                status: "error"
-            })
-        );
-        throw new NonRetriableError("HTTP Request Node: Variable name not configured");
-    }
-
-    if (!data.method) {
-        await publish(
-            httpRequestChannel().status({
-                nodeID,
-                status: "error"
-            })
-        );
-        throw new NonRetriableError("HTTP Request Node: Method not configured");
-    }
     // const result = await step.run("http-request", async () => context);
     // const result = await step.fetch(data.endpoint);
+
     try {
+
         const result = await step.run("http-request", async () => {
+
+
+            if (!data.endpoint) {
+                await publish(
+                    httpRequestChannel().status({
+                        nodeID,
+                        status: "error"
+                    })
+                );// could this be done using try-catch?
+                throw new NonRetriableError("HTTP Request Node: No endpoint configured");
+            }
+
+            if (!data.variableName) {
+                await publish(
+                    httpRequestChannel().status({
+                        nodeID,
+                        status: "error"
+                    })
+                );
+                throw new NonRetriableError("HTTP Request Node: Variable name not configured");
+            }
+
+            if (!data.method) {
+                await publish(
+                    httpRequestChannel().status({
+                        nodeID,
+                        status: "error"
+                    })
+                );
+                throw new NonRetriableError("HTTP Request Node: Method not configured");
+            }
 
             const endpoint = Handlebars.compile(data.endpoint)(context); // https://.../{{todo.httpResponse.data.userID}}
             // console.log("ENDPOINT", { endpoint });
