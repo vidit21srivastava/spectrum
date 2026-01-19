@@ -30,8 +30,9 @@ export const GoogleFormTriggerDialog = ({
     const workflowID = params.workflowID as string;
 
     // webhook url
-    const baseURL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const webhookURL = `${baseURL}/api/webhooks/google-form?workflowID=${workflowID}`;
+    // const baseURL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const baseURL = process.env.NGROK_URL || "sharice-wannest-smelly.ngrok-free.dev";
+    const webhookURL = `https://${baseURL}/api/webhooks/google-form?workflowID=${workflowID}`;
 
     const copyToClipboard = async () => {
         try {

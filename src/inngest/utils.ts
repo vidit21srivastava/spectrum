@@ -1,6 +1,7 @@
 import { Connection, Node } from "@/generated/prisma";
 import { NonRetriableError } from "inngest";
 import toposort from "toposort";
+import { inngest } from "./client";
 
 export const topologicalSort = (
     nodes: Node[],
@@ -51,4 +52,16 @@ export const topologicalSort = (
     return sortedNodeIDs.map((id) => nodeMap.get(id)!).filter(Boolean); // Non-Null assertion fixed. {!}
 };
 
-// Only edge case is cycle. TODO
+// Only edge case is cycle. 
+
+export const sendWorkflowExecution = async (data: {
+    workflowID: string;
+    [key: string]: any; // to check
+}) => {
+
+    return inngest.send({
+        name: "workflows/execute.workflow",
+        data,
+    })
+};
+

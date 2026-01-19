@@ -45,7 +45,7 @@ export const executeWorkflow = inngest.createFunction(
 
         // Initializing the context with any initial data  from the trigger.
 
-        let context = event.data.initialData || {}; //Revisit
+        let context = event.data.initialData || {};
 
         for (const node of sortedNodes) {
             const executor = getExecutor(node.type as NodeType); //->executor registry
