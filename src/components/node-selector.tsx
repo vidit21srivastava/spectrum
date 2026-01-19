@@ -33,13 +33,13 @@ export type NodeTypeOption = {
 const triggerNodes: NodeTypeOption[] = [
     {
         type: NodeType.MANUAL_TRIGGER,
-        label: "Trigger manually",
+        label: "Manual Trigger",
         description: "Runs the flow on clicking a button. Good for getting started quickly",
         icon: MousePointer2Icon,
     },
     {
         type: NodeType.GOOGLE_FORM_TRIGGER,
-        label: "Google Form",
+        label: "Google Forms",
         description: "Runs the flow when a Google Form is submitted",
         icon: "/googleform.svg",
     },
@@ -134,10 +134,10 @@ export function NodeSelector({
             <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
                 <SheetHeader>
                     <SheetTitle>
-                        Triggers & Executors
+                        Triggers & Actions
                     </SheetTitle>
                     <SheetDescription>
-                        A trigger helps start your workflow.
+                        Choose a trigger to start your workflow or an action to perform.
                     </SheetDescription>
                 </SheetHeader>
                 <div>
@@ -149,7 +149,7 @@ export function NodeSelector({
                                 return (
                                     <div
                                         key={nodeType.type}
-                                        className="w-full justify-start h-auto py-5 px-4 rounded-none cursor-pointer border-l-2 border-transparent hover:border-l-primary"
+                                        className="w-full justify-start h-auto py-5 px-4 rounded-none cursor-pointer border-l-3 border-transparent hover:border-l-primary"
                                         onClick={() => handleNodeSelect(nodeType)}
                                     >
                                         <div className="flex items-center gap-6 w-full overflow-hidden">
@@ -190,7 +190,7 @@ export function NodeSelector({
                                 return (
                                     <div
                                         key={nodeType.type}
-                                        className="w-full justify-start h-auto py-5 px-4 rounded-none cursor-pointer border-l-2 border-transparent hover:border-l-primary"
+                                        className="w-full justify-start h-auto py-5 px-4 rounded-none cursor-pointer border-l-3 border-transparent hover:border-l-primary"
                                         onClick={() => handleNodeSelect(nodeType)}
                                     >
                                         <div className="flex items-center gap-6 w-full overflow-hidden">

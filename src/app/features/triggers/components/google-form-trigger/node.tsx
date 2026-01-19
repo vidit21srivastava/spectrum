@@ -4,7 +4,7 @@ import { NodeProps } from "@xyflow/react";
 import { memo, useState } from "react";
 import { BaseTriggerNode } from "../base-trigger-node";
 import { MousePointer2Icon } from "lucide-react";
-import { ManualTriggerDialog } from "./dialog";
+import { GoogleFormTriggerDialog } from "./dialog";
 import { MANUAL_TRIGGER_CHANNEL_NAME } from "@/inngest/channels/manual-trigger";
 import { useNodeStatus } from "@/app/features/executions/hooks/use-node-status";
 import { fetchManualTriggerRealtimeToken } from "./actions";
@@ -26,14 +26,15 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
 
     return (
         <>
-            <ManualTriggerDialog
+            <GoogleFormTriggerDialog
                 open={dialogOpen}
                 onOpenChange={setDialogOpen}
             />
             <BaseTriggerNode
                 {...props}
                 icon="/googleform.svg"
-                name="On form 'Submission'"
+                name="Google Forms"
+                description="On form 'Submission'"
                 status={nodeStatus}
                 onSettings={handleOpenSettings}
                 onDoubleClick={handleOpenSettings}
