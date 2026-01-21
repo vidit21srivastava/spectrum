@@ -1,9 +1,9 @@
 import type { NodeExecutor } from "@/app/features/executions/types";
-import { googleFormTriggerChannel } from "@/inngest/channels/google-form-trigger";
+import { paymentTriggerChannel } from "@/inngest/channels/payment-trigger";
 
-type GoogleFormTriggerData = Record<string, unknown>;
+type PaymentTriggerData = Record<string, unknown>;
 
-export const googleFromTriggerExecutor: NodeExecutor<GoogleFormTriggerData> = async (
+export const paymentTriggerExecutor: NodeExecutor<PaymentTriggerData> = async (
     {
         // data,
         nodeID,
@@ -13,7 +13,7 @@ export const googleFromTriggerExecutor: NodeExecutor<GoogleFormTriggerData> = as
     }
 ) => {
     await publish(
-        googleFormTriggerChannel().status({
+        paymentTriggerChannel().status({
             nodeID,
             status: "loading"
         })
@@ -22,7 +22,7 @@ export const googleFromTriggerExecutor: NodeExecutor<GoogleFormTriggerData> = as
     const result = await step.run("google-form-trigger", async () => context);
 
     await publish(
-        googleFormTriggerChannel().status({
+        paymentTriggerChannel().status({
             nodeID,
             status: "success"
         })

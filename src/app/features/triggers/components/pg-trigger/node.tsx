@@ -3,21 +3,21 @@
 import { NodeProps } from "@xyflow/react";
 import { memo, useState } from "react";
 import { BaseTriggerNode } from "../base-trigger-node";
-import { GoogleFormTriggerDialog } from "./dialog";
-import { GOOGLE_FORM_TRIGGER_CHANNEL_NAME } from "@/inngest/channels/google-form-trigger";
-import { fetchGoogleFormTriggerRealtimeToken } from "./actions";
+import { PaymentTriggerDialog } from "./dialog";
+import { fetchPaymentTriggerRealtimeToken } from "./actions";
 import { useNodeStatus } from "@/app/features/executions/hooks/use-node-status";
+import { PAYMENT_TRIGGER_CHANNEL_NAME } from "@/inngest/channels/payment-trigger";
 
 
-export const GoogleFormTriggerNode = memo((props: NodeProps) => {
+export const PaymentTriggerNode = memo((props: NodeProps) => {
 
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const nodeStatus = useNodeStatus({
         nodeID: props.id,
-        channel: GOOGLE_FORM_TRIGGER_CHANNEL_NAME,
+        channel: PAYMENT_TRIGGER_CHANNEL_NAME,
         topic: "status",
-        refreshToken: fetchGoogleFormTriggerRealtimeToken,
+        refreshToken: fetchPaymentTriggerRealtimeToken,
     });
 
 
@@ -26,15 +26,15 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
 
     return (
         <>
-            <GoogleFormTriggerDialog
+            <PaymentTriggerDialog
                 open={dialogOpen}
                 onOpenChange={setDialogOpen}
             />
             <BaseTriggerNode
                 {...props}
-                icon="/googleform.svg"
-                name="Google Forms"
-                description="On form 'Submission'"
+                icon="/stripe.svg"
+                name="Stripe"
+                description="On 'Payment' event"
                 status={nodeStatus}
                 onSettings={handleOpenSettings}
                 onDoubleClick={handleOpenSettings}
@@ -43,4 +43,4 @@ export const GoogleFormTriggerNode = memo((props: NodeProps) => {
     );
 });
 
-GoogleFormTriggerNode.displayName = "GoogleFormTriggerNode";
+PaymentTriggerNode.displayName = "PaymentTriggerNode";

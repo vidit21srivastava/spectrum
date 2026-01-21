@@ -43,6 +43,12 @@ const triggerNodes: NodeTypeOption[] = [
         description: "Runs the flow when a Google Form is submitted",
         icon: "/googleform.svg",
     },
+    {
+        type: NodeType.PAYMENT_TRIGGER,
+        label: "Stripe Event",
+        description: "Runs the flow when a payment event is captured",
+        icon: "/stripe.svg",
+    },
 ];
 
 const executionNodes: NodeTypeOption[] = [
@@ -159,7 +165,7 @@ export function NodeSelector({
                                                     alt={nodeType.label}
                                                     width={20}
                                                     height={20}
-                                                    className="size-5 object-contain rounded-sm"
+                                                    className="size-5 object-contain rounded"
                                                 />
                                             ) : (
                                                 <Icon className="size-5" />
@@ -200,7 +206,7 @@ export function NodeSelector({
                                                     alt={nodeType.label}
                                                     width={20}
                                                     height={20}
-                                                    className="size-5 object-contain rounded-sm"
+                                                    className="size-5 object-contain rounded"
                                                 />
                                             ) : (
                                                 <Icon className="size-5" />
