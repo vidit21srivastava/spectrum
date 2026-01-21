@@ -7,6 +7,8 @@ import { getExecutor } from "@/app/features/executions/lib/executor-registry";
 import { httpRequestChannel } from "./channels/http-request";
 import { manualTriggerChannel } from "./channels/manual-trigger";
 import { googleFormTriggerChannel } from "./channels/google-form-trigger";
+import { paymentTriggerChannel } from "./channels/payment-trigger";
+import { paypalTriggerChannel } from "./channels/paypal-trigger";
 
 
 export const executeWorkflow = inngest.createFunction(
@@ -20,6 +22,8 @@ export const executeWorkflow = inngest.createFunction(
             httpRequestChannel(),
             manualTriggerChannel(),
             googleFormTriggerChannel(),
+            paymentTriggerChannel(),
+            paypalTriggerChannel(),
         ]
     },
     async ({ event, step, publish }) => {

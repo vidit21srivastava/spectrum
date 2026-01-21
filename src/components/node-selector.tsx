@@ -44,6 +44,12 @@ const triggerNodes: NodeTypeOption[] = [
         icon: "/googleform.svg",
     },
     {
+        type: NodeType.PAYPAL_TRIGGER,
+        label: "PayPal Event",
+        description: "Runs the flow when a payment event is captured",
+        icon: "/paypal.svg",
+    },
+    {
         type: NodeType.PAYMENT_TRIGGER,
         label: "Stripe Event",
         description: "Runs the flow when a payment event is captured",

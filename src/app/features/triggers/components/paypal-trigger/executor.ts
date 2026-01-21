@@ -1,9 +1,9 @@
 import type { NodeExecutor } from "@/app/features/executions/types";
-import { paymentTriggerChannel } from "@/inngest/channels/payment-trigger";
+import { paypalTriggerChannel } from "@/inngest/channels/paypal-trigger";
 
-type PaymentTriggerData = Record<string, unknown>;
+type PayPalTriggerData = Record<string, unknown>;
 
-export const paymentTriggerExecutor: NodeExecutor<PaymentTriggerData> = async (
+export const paypalTriggerExecutor: NodeExecutor<PayPalTriggerData> = async (
     {
         // data,
         nodeID,
@@ -13,16 +13,16 @@ export const paymentTriggerExecutor: NodeExecutor<PaymentTriggerData> = async (
     }
 ) => {
     await publish(
-        paymentTriggerChannel().status({
+        paypalTriggerChannel().status({
             nodeID,
             status: "loading"
         })
     );
 
-    const result = await step.run("stripe-trigger", async () => context);
+    const result = await step.run("paypal-trigger", async () => context);
 
     await publish(
-        paymentTriggerChannel().status({
+        paypalTriggerChannel().status({
             nodeID,
             status: "success"
         })

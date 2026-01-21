@@ -11,20 +11,20 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CopyIcon, EllipsisVerticalIcon } from "lucide-react";
+import { CopyIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 
 
-interface PaymentTriggerDialogProps {
+interface PayPalTriggerDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
 }
 
-export const PaymentTriggerDialog = ({
+export const PayPalTriggerDialog = ({
     open,
     onOpenChange
-}: PaymentTriggerDialogProps) => {
+}: PayPalTriggerDialogProps) => {
 
     const params = useParams();
     const workflowID = params.workflowID as string;
@@ -32,7 +32,7 @@ export const PaymentTriggerDialog = ({
     // webhook url
     // const baseURL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
     const baseURL = process.env.NGROK_URL || "sharice-wannest-smelly.ngrok-free.dev";
-    const webhookURL = `https://${baseURL}/api/webhooks/stripe?workflowID=${workflowID}`;
+    const webhookURL = `https://${baseURL}/api/webhooks/paypal?workflowID=${workflowID}`;
 
     const copyToClipboard = async () => {
         try {
@@ -46,9 +46,9 @@ export const PaymentTriggerDialog = ({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
-                <DialogTitle>Stripe Trigger Configuration</DialogTitle>
+                <DialogTitle>PayPal Trigger Configuration</DialogTitle>
                 <DialogDescription>
-                    Use this webhook URL in your Stripe Dashboard to trigger this workflow on payment events.
+                    Use this webhook URL in your PayPal Dashboard to trigger this workflow on payment events.
                 </DialogDescription>
                 <DialogHeader>
                     <div className="space-y-4">
@@ -74,11 +74,11 @@ export const PaymentTriggerDialog = ({
                             <div className="rounded-lg bg-muted p-4 space-y-2">
                                 <h4 className="font-medium text-sm">Setup Instructions</h4>
                                 <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-                                    <li>Open your Stripe Dashboard.</li>
-                                    <li>Go to Developers &rarr; Webhooks. </li>
+                                    <li>Open your PayPal Dashboard.</li>
+                                    <li>Go to App&Credentials &rarr; App Name &rarr; Webhooks. </li>
                                     <li>Click &quot;Add Webhook&quot;.</li>
                                     <li>Copy and paste the above webhook URL.</li>
-                                    <li>Select events to listen for (e.g., payment_intent.succeeded).</li>
+                                    <li>Select events to listen for (e.g., PAYMENTS.PAYMENT.CREATED).</li>
                                     <li>Save and copy the signing secret.</li>
                                 </ol>
                             </div>
@@ -88,27 +88,27 @@ export const PaymentTriggerDialog = ({
                                 <ul className="text-sm text-muted-foreground space-y-1">
                                     <li>&bull;&ensp;
                                         <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{stripe.amount}}"}
+                                            {"{{paypal.amount}}"}
                                         </code>&ensp;&mdash; Payment Amount
                                     </li>
                                     <li>&bull;&ensp;
                                         <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{stripe.currency}}"}
+                                            {"{{paypal.currency}}"}
                                         </code>&ensp;&mdash; Currency Code
                                     </li>
                                     <li>&bull;&ensp;
                                         <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{stripe.customerId}}"}
+                                            {"{{paypal.customerId}}"}
                                         </code>&ensp;&mdash; Customer ID
                                     </li>
                                     <li>&bull;&ensp;
                                         <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{stripe.eventType}}"}
-                                        </code>&ensp;&mdash; Event type (e.g., payment_intent.succeeded)
+                                            {"{{paypal.eventType}}"}
+                                        </code>&ensp;&mdash; Event type (e.g., PAYMENTS.PAYMENT.CREATED)
                                     </li>
                                     <li>&bull;&ensp;
                                         <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{JSON stripe}}"}
+                                            {"{{JSON paypal}}"}
                                         </code>&ensp;&mdash; Full event data as JSON
                                     </li>
                                 </ul>
