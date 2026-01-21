@@ -17,10 +17,9 @@ export async function POST(req: NextRequest) {
 
         const paypalData = {
             eventId: body.id,
-            eventType: body.type,
-            timeStamp: body.created,
-            livemode: body.livemode,
-            raw: body.data?.object,
+            eventType: body.event_type,
+            timeStamp: body.create_time,
+            raw: body,
         }
 
         await sendWorkflowExecution({
