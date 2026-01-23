@@ -45,13 +45,16 @@ export const GoogleFormTriggerDialog = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
-                <DialogTitle>Google Forms Trigger Configuration</DialogTitle>
-                <DialogDescription>
-                    Use this webhook URL in your Google Form&apos;s Apps Script to trigger this workflow when a form is submitted.
-                </DialogDescription>
+            <DialogContent className="max-h-[85vh] flex flex-col">
                 <DialogHeader>
-                    <div className="space-y-4">
+                    <DialogTitle>Google Forms Trigger Configuration</DialogTitle>
+                    <DialogDescription>
+                        Use this webhook URL in your Google Form&apos;s Apps Script to trigger this workflow when a form is submitted.
+                    </DialogDescription>
+                </DialogHeader>
+
+                <div className="flex-1 overflow-y-auto px-1">
+                    <div className="space-y-4 pt-4">
                         <div className="space-y-2">
                             <Label htmlFor="webhook-url">
                                 Webhook URL
@@ -123,7 +126,7 @@ export const GoogleFormTriggerDialog = ({
                             </div>
                         </div>
                     </div>
-                </DialogHeader>
+                </div>
             </DialogContent>
         </Dialog>
     );

@@ -46,7 +46,7 @@ const formSchema = z.object({
     body: z
         .string()
         .optional()
-    // .refine() TODO
+    // .refine() TODO JSON5
 })
 
 export type HttpRequestFormValues = z.infer<typeof formSchema>;
@@ -102,14 +102,17 @@ export const HttpRequestDialog = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
-                <DialogTitle>HTTP Request</DialogTitle>
-                <DialogDescription>
-                    Configure settings for HTTP Request  node.
-                </DialogDescription>
+            <DialogContent className="max-h-[85vh] flex flex-col">
                 <DialogHeader>
+                    <DialogTitle>HTTP Request</DialogTitle>
+                    <DialogDescription>
+                        Configure settings for HTTP Request  node.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="flex-1 overflow-y-auto px-1">
                     <Form {...form}>
                         <form
+                            id="http-request-form"
                             onSubmit={form.handleSubmit(handleSubmit)}
                             className="space-y-8 mt-4"
                         >
@@ -206,12 +209,12 @@ export const HttpRequestDialog = ({
                                     )}
                                 />
                             )}
-                            <DialogFooter className="mt-4">
-                                <Button type="submit">Save</Button>
-                            </DialogFooter>
                         </form>
                     </Form>
-                </DialogHeader>
+                </div>
+                <DialogFooter className="mt-4">
+                    <Button type="submit" form="http-request-form">Save</Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

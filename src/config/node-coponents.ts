@@ -1,3 +1,4 @@
+import { GoogleGeminiNode } from "@/app/features/executions/components/google-gemini/node";
 import { HttpRequestNode } from "@/app/features/executions/components/http-request/node";
 import { GoogleFormTriggerNode } from "@/app/features/triggers/components/google-form-trigger/node";
 import { ManualTriggerNode } from "@/app/features/triggers/components/manual-trigger/node";
@@ -14,6 +15,7 @@ export const nodeComponents = {
     [NodeType.GOOGLE_FORM_TRIGGER]: GoogleFormTriggerNode,
     [NodeType.PAYMENT_TRIGGER]: PaymentTriggerNode,
     [NodeType.PAYPAL_TRIGGER]: PayPalTriggerNode,
+    [NodeType.GOOGLE_GEMINI]: GoogleGeminiNode,
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof nodeComponents;

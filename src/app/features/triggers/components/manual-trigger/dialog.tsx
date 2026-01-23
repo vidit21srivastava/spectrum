@@ -20,7 +20,7 @@ export const ManualTriggerDialog = ({
 }: ManualTriggerDialogProps) => {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-h-[85vh] flex flex-col">
                 <DialogTitle>Manual Trigger</DialogTitle>
                 <DialogDescription>
                     Configure settings for manual trigger node.

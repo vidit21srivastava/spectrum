@@ -45,73 +45,75 @@ export const PaymentTriggerDialog = ({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-h-[85vh] flex flex-col">
                 <DialogTitle>Stripe Trigger Configuration</DialogTitle>
                 <DialogDescription>
                     Use this webhook URL in your Stripe Dashboard to trigger this workflow on payment events.
                 </DialogDescription>
                 <DialogHeader>
-                    <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="webhook-url">
-                                Webhook URL
-                            </Label>
-                            <div className="flex gap-2">
-                                <Input
-                                    id="webhook-url"
-                                    value={webhookURL}
-                                    readOnly
-                                    className="font-mono text-sm" />
-                                <Button
-                                    type="button"
-                                    size="icon"
-                                    variant="outline"
-                                    onClick={copyToClipboard}
-                                >
-                                    <CopyIcon className="size-4" />
-                                </Button>
-                            </div>
-                            <div className="rounded-lg bg-muted p-4 space-y-2">
-                                <h4 className="font-medium text-sm">Setup Instructions</h4>
-                                <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-                                    <li>Open your Stripe Dashboard.</li>
-                                    <li>Go to Developers &rarr; Webhooks. </li>
-                                    <li>Click &quot;Add Webhook&quot;.</li>
-                                    <li>Copy and paste the above webhook URL.</li>
-                                    <li>Select events to listen for (e.g., payment_intent.succeeded).</li>
-                                    <li>Save and copy the signing secret.</li>
-                                </ol>
-                            </div>
+                    <div className="flex-1 overflow-y-auto px-1">
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="webhook-url">
+                                    Webhook URL
+                                </Label>
+                                <div className="flex gap-2">
+                                    <Input
+                                        id="webhook-url"
+                                        value={webhookURL}
+                                        readOnly
+                                        className="font-mono text-sm" />
+                                    <Button
+                                        type="button"
+                                        size="icon"
+                                        variant="outline"
+                                        onClick={copyToClipboard}
+                                    >
+                                        <CopyIcon className="size-4" />
+                                    </Button>
+                                </div>
+                                <div className="rounded-lg bg-muted p-4 space-y-2">
+                                    <h4 className="font-medium text-sm">Setup Instructions</h4>
+                                    <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+                                        <li>Open your Stripe Dashboard.</li>
+                                        <li>Go to Developers &rarr; Webhooks. </li>
+                                        <li>Click &quot;Add Webhook&quot;.</li>
+                                        <li>Copy and paste the above webhook URL.</li>
+                                        <li>Select events to listen for (e.g., payment_intent.succeeded).</li>
+                                        <li>Save and copy the signing secret.</li>
+                                    </ol>
+                                </div>
 
-                            <div className="rounded-lg bg-muted p-4 space-y-2">
-                                <h4 className="font-medium text-sm">Available Variables</h4>
-                                <ul className="text-sm text-muted-foreground space-y-1">
-                                    <li>&bull;&ensp;
-                                        <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{stripe.amount}}"}
-                                        </code>&ensp;&mdash; Payment Amount
-                                    </li>
-                                    <li>&bull;&ensp;
-                                        <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{stripe.currency}}"}
-                                        </code>&ensp;&mdash; Currency Code
-                                    </li>
-                                    <li>&bull;&ensp;
-                                        <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{stripe.customerId}}"}
-                                        </code>&ensp;&mdash; Customer ID
-                                    </li>
-                                    <li>&bull;&ensp;
-                                        <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{stripe.eventType}}"}
-                                        </code>&ensp;&mdash; Event type (e.g., payment_intent.succeeded)
-                                    </li>
-                                    <li>&bull;&ensp;
-                                        <code className="bg-accent px-1 py-0.5 rounded">
-                                            {"{{JSON stripe}}"}
-                                        </code>&ensp;&mdash; Full event data as JSON
-                                    </li>
-                                </ul>
+                                <div className="rounded-lg bg-muted p-4 space-y-2">
+                                    <h4 className="font-medium text-sm">Available Variables</h4>
+                                    <ul className="text-sm text-muted-foreground space-y-1">
+                                        <li>&bull;&ensp;
+                                            <code className="bg-accent px-1 py-0.5 rounded">
+                                                {"{{stripe.amount}}"}
+                                            </code>&ensp;&mdash; Payment Amount
+                                        </li>
+                                        <li>&bull;&ensp;
+                                            <code className="bg-accent px-1 py-0.5 rounded">
+                                                {"{{stripe.currency}}"}
+                                            </code>&ensp;&mdash; Currency Code
+                                        </li>
+                                        <li>&bull;&ensp;
+                                            <code className="bg-accent px-1 py-0.5 rounded">
+                                                {"{{stripe.customerId}}"}
+                                            </code>&ensp;&mdash; Customer ID
+                                        </li>
+                                        <li>&bull;&ensp;
+                                            <code className="bg-accent px-1 py-0.5 rounded">
+                                                {"{{stripe.eventType}}"}
+                                            </code>&ensp;&mdash; Event type (e.g., payment_intent.succeeded)
+                                        </li>
+                                        <li>&bull;&ensp;
+                                            <code className="bg-accent px-1 py-0.5 rounded">
+                                                {"{{JSON stripe}}"}
+                                            </code>&ensp;&mdash; Full event data as JSON
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
