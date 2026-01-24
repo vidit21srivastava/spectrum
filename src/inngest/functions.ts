@@ -10,6 +10,8 @@ import { googleFormTriggerChannel } from "./channels/google-form-trigger";
 import { paymentTriggerChannel } from "./channels/payment-trigger";
 import { paypalTriggerChannel } from "./channels/paypal-trigger";
 import { googleGeminiChannel } from "./channels/google-gemini";
+import { openaiChannel } from "./channels/openai";
+import { anthropicChannel } from "./channels/anthropic";
 
 
 export const executeWorkflow = inngest.createFunction(
@@ -26,6 +28,8 @@ export const executeWorkflow = inngest.createFunction(
             paymentTriggerChannel(),
             paypalTriggerChannel(),
             googleGeminiChannel(),
+            openaiChannel(),
+            anthropicChannel(),
         ]
     },
     async ({ event, step, publish }) => {

@@ -36,9 +36,9 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export const AVAILABLE_MODELS = [
-    "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
-    "gemini-3-flash-preview",
+    "claude-sonnet-4-5-20250929",
+    "claude-haiku-4-5-20251001",
+    "claude-opus-4-5-20251101",
 ] as const;
 
 
@@ -53,21 +53,21 @@ const formSchema = z.object({
     userPrompt: z.string().min(1, "User prompt is required"),
 })
 
-export type GoogleGeminiFormValues = z.infer<typeof formSchema>;
+export type AnthropicFormValues = z.infer<typeof formSchema>;
 
-interface GoogleGeminiDialogProps {
+interface AnthropicDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSubmit: (values: z.infer<typeof formSchema>) => void;
-    defaultValues?: Partial<GoogleGeminiFormValues>;
+    defaultValues?: Partial<AnthropicFormValues>;
 }
 
-export const GoogleGeminiDialog = ({
+export const AnthropicDialog = ({
     open,
     onOpenChange,
     onSubmit,
     defaultValues = {},
-}: GoogleGeminiDialogProps) => {
+}: AnthropicDialogProps) => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -93,7 +93,7 @@ export const GoogleGeminiDialog = ({
     }, [open, defaultValues, form]);
 
     // eslint-disable-next-line react-hooks/incompatible-library    
-    const watchVariableName = form.watch("variableName") || "myModel";
+    const watchVariableName = form.watch("variableName") || "apiCall";
 
     const handleSubmit = (values: z.infer<typeof formSchema>) => {
         onSubmit(values);
@@ -105,7 +105,7 @@ export const GoogleGeminiDialog = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-h-[85vh] flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>Gemini Configuration</DialogTitle>
+                    <DialogTitle>Anthropic Configuration</DialogTitle>
                     <DialogDescription>
                         Configure settings for AI model and prompts for this node.
                     </DialogDescription>
@@ -113,7 +113,7 @@ export const GoogleGeminiDialog = ({
                 <div className="flex-1 overflow-y-auto px-1">
                     <Form {...form}>
                         <form
-                            id="gemini-node-form"
+                            id="anthropic-node-form"
                             onSubmit={form.handleSubmit(handleSubmit)}
                             className="space-y-8 mt-4"
                         >
@@ -137,8 +137,8 @@ export const GoogleGeminiDialog = ({
                                                     AVAILABLE_MODELS.map((model) => (
                                                         <SelectItem key={model} value={model}>
                                                             <Image
-                                                                src="/gemini.svg"
-                                                                alt="Gemini"
+                                                                src="/claude.svg"
+                                                                alt="Claude"
                                                                 width={20}
                                                                 height={20}
                                                                 className="size-4 object-contain"
@@ -151,7 +151,7 @@ export const GoogleGeminiDialog = ({
                                             </SelectContent>
                                         </Select>
                                         <FormDescription>
-                                            The Gemini model to be used for action
+                                            The Anthropic model to be used for action
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -226,7 +226,7 @@ export const GoogleGeminiDialog = ({
                     </Form>
                 </div>
                 <DialogFooter className="mt-4">
-                    <Button type="submit" form="gemini-node-form">Save</Button>
+                    <Button type="submit" form="anthropic-node-form">Save</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

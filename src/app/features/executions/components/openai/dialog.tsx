@@ -36,9 +36,14 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export const AVAILABLE_MODELS = [
-    "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
-    "gemini-3-flash-preview",
+    "gpt-5.2-pro",
+    "gpt-5.1-codex",
+    "gpt-5",
+    "gpt-5-mini",
+    "gpt-5-nano",
+    "gpt-4.1",
+
+
 ] as const;
 
 
@@ -53,21 +58,21 @@ const formSchema = z.object({
     userPrompt: z.string().min(1, "User prompt is required"),
 })
 
-export type GoogleGeminiFormValues = z.infer<typeof formSchema>;
+export type OpenAIFormValues = z.infer<typeof formSchema>;
 
-interface GoogleGeminiDialogProps {
+interface OpenAIDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSubmit: (values: z.infer<typeof formSchema>) => void;
-    defaultValues?: Partial<GoogleGeminiFormValues>;
+    defaultValues?: Partial<OpenAIFormValues>;
 }
 
-export const GoogleGeminiDialog = ({
+export const OpenAIDialog = ({
     open,
     onOpenChange,
     onSubmit,
     defaultValues = {},
-}: GoogleGeminiDialogProps) => {
+}: OpenAIDialogProps) => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -105,7 +110,7 @@ export const GoogleGeminiDialog = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-h-[85vh] flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>Gemini Configuration</DialogTitle>
+                    <DialogTitle>OpenAI Configuration</DialogTitle>
                     <DialogDescription>
                         Configure settings for AI model and prompts for this node.
                     </DialogDescription>
@@ -113,7 +118,7 @@ export const GoogleGeminiDialog = ({
                 <div className="flex-1 overflow-y-auto px-1">
                     <Form {...form}>
                         <form
-                            id="gemini-node-form"
+                            id="openai-node-form"
                             onSubmit={form.handleSubmit(handleSubmit)}
                             className="space-y-8 mt-4"
                         >
@@ -137,8 +142,8 @@ export const GoogleGeminiDialog = ({
                                                     AVAILABLE_MODELS.map((model) => (
                                                         <SelectItem key={model} value={model}>
                                                             <Image
-                                                                src="/gemini.svg"
-                                                                alt="Gemini"
+                                                                src="/openai.svg"
+                                                                alt="OpenAI"
                                                                 width={20}
                                                                 height={20}
                                                                 className="size-4 object-contain"
@@ -151,7 +156,7 @@ export const GoogleGeminiDialog = ({
                                             </SelectContent>
                                         </Select>
                                         <FormDescription>
-                                            The Gemini model to be used for action
+                                            The OpenAI model to be used for action
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
@@ -226,7 +231,7 @@ export const GoogleGeminiDialog = ({
                     </Form>
                 </div>
                 <DialogFooter className="mt-4">
-                    <Button type="submit" form="gemini-node-form">Save</Button>
+                    <Button type="submit" form="openai-node-form">Save</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
