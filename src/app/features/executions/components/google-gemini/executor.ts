@@ -82,7 +82,7 @@ export const googleGeminiExecutor: NodeExecutor<googleGeminiData> = async (
             },
         );
 
-        const text = steps[0].content[0].type === "text"
+        const text = steps?.[0]?.content?.[0]?.type === "text" //defensive check
             ? steps[0].content[0].text
             : "";
 
