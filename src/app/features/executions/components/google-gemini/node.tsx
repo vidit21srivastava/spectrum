@@ -1,7 +1,6 @@
 "use client";
 
 import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
-import { GlobeIcon } from "lucide-react";
 import { memo, useState } from "react";
 import { BaseExecutionNode } from "../base-execution-node";
 import { AVAILABLE_MODELS, GoogleGeminiDialog, GoogleGeminiFormValues } from "./dialog";
@@ -29,6 +28,7 @@ export const GoogleGeminiNode = memo((props: NodeProps<GoogleGeminiNodeType>) =>
         topic: "status",
         refreshToken: fetchGoogleGeminiRealtimeToken,
     });
+
     // const nodeStatus = "loading";
 
     const handleOpenSettings = () => setDialogOpen(true);

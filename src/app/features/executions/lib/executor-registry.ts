@@ -5,6 +5,7 @@ import { httpRequestExecutor } from "../components/http-request/executor";
 import { googleFromTriggerExecutor } from "../../triggers/components/google-form-trigger/executor";
 import { paymentTriggerExecutor } from "../../triggers/components/pg-trigger/executor";
 import { paypalTriggerExecutor } from "../../triggers/components/paypal-trigger/executor";
+import { googleGeminiExecutor } from "../components/google-gemini/executor";
 
 export const executorRegistry: Record<NodeType, NodeExecutor> = {
     [NodeType.INITIAL]: manualTriggerExecutor,
@@ -13,6 +14,9 @@ export const executorRegistry: Record<NodeType, NodeExecutor> = {
     [NodeType.GOOGLE_FORM_TRIGGER]: googleFromTriggerExecutor,
     [NodeType.PAYMENT_TRIGGER]: paymentTriggerExecutor,
     [NodeType.PAYPAL_TRIGGER]: paypalTriggerExecutor,
+    [NodeType.GOOGLE_GEMINI]: googleGeminiExecutor,
+    [NodeType.ANTHROPIC]: googleGeminiExecutor, //TODO
+    [NodeType.OPENAI]: googleGeminiExecutor, //TODO
 };
 
 export const getExecutor = (type: NodeType): NodeExecutor => {

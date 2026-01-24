@@ -1,5 +1,6 @@
 import type { NodeExecutor } from "@/app/features/executions/types";
 import { NonRetriableError } from "inngest";
+import { generateText } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import Handlebars from "handlebars";
 import { googleGeminiChannel } from "@/inngest/channels/google-gemini";
@@ -34,6 +35,28 @@ export const googleGeminiExecutor: NodeExecutor<googleGeminiData> = async (
         })
     );
 
+    if (!data.variableName) {
+        await publish(
+            googleGeminiChannel().status({
+                nodeID,
+                status: "error"
+            })
+        );
+        throw new NonRetriableError("Gemini node: Variable name is missing");
+    }
+
+    if (!data.userPrompt) {
+        await publish(
+            googleGeminiChannel().status({
+                nodeID,
+                status: "error"
+            })
+        );
+        throw new NonRetriableError("Gemini node: User prompt is missing");
+    }
+
+    //TODO: cred missing?
+
     const systemPrompt = data.systemPrompt
         ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant.";
     const userPrompt = Handlebars.compile(data.userPrompt)(context);
@@ -44,5 +67,47 @@ export const googleGeminiExecutor: NodeExecutor<googleGeminiData> = async (
         apiKey: credValue,
     });
 
+    try {
+        const { steps } = await step.ai.wrap("gemini-generate-text",
+            generateText,
+            {
+                model: google(data.model || "gemini-2.0-flash"),
+                system: systemPrompt,
+                prompt: userPrompt,
+                experimental_telemetry: {
+                    isEnabled: true,
+                    recordInputs: true,
+                    recordOutputs: true,
+                },//sentry
+            },
+        );
+
+        const text = steps[0].content[0].type === "text"
+            ? steps[0].content[0].text
+            : "";
+
+        await publish(
+            googleGeminiChannel().status({
+                nodeID,
+                status: "success"
+            })
+        );
+
+
+        return {
+            ...context,
+            [data.variableName]: {
+                aiResponse: text,
+            },
+        };
+    } catch (error) {
+        await publish(
+            googleGeminiChannel().status({
+                nodeID,
+                status: "error"
+            })
+        );
+        throw error;
+    }
 
 };
