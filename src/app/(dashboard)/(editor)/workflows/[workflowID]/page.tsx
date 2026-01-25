@@ -1,6 +1,6 @@
-import { Editor, EditorError, EditorLoading } from "@/app/features/editor/components/editor";
-import { EditorHeader } from "@/app/features/editor/components/editor-header";
-import { prefetchWorkflow } from "@/app/features/workflows/server/prefetch";
+import { Editor, EditorError, EditorLoading } from "@/features/editor/components/editor";
+import { EditorHeader } from "@/features/editor/components/editor-header";
+import { prefetchWorkflow } from "@/features/workflows/server/prefetch";
 import { requireAuth } from "@/lib/auth-utils";
 import { HydrateClient } from "@/trpc/server";
 import { Suspense } from "react";

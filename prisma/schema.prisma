@@ -15,16 +15,17 @@ datasource db {
 }
 
 model User {
-  id            String     @id
+  id            String       @id
   name          String
   email         String
-  emailVerified Boolean    @default(false)
+  emailVerified Boolean      @default(false)
   image         String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @default(now()) @updatedAt
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
   workflows     Workflow[]
+  credentials   Credential[]
 
   @@unique([email])
   @@map("user")
@@ -76,11 +77,10 @@ model Verification {
 }
 
 model Workflow {
-  id        String   @id @default(cuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id          String       @id @default(cuid())
+  name        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   userId      String
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   nodes       Node[]
@@ -100,38 +100,51 @@ enum NodeType {
 }
 
 model Node {
-  id         String   @id @default(cuid())
-  workflowID String
-  workflow   Workflow @relation(fields: [workflowID], references: [id], onDelete: Cascade)
-
-  name     String
-  type     NodeType
-  position Json
-  data     Json     @default("{}")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id                String       @id @default(cuid())
+  workflowID        String
+  workflow          Workflow     @relation(fields: [workflowID], references: [id], onDelete: Cascade)
+  name              String
+  type              NodeType
+  position          Json
+  data              Json         @default("{}")
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
   outputConnections Connection[] @relation("FromNode")
   inputConnections  Connection[] @relation("ToNode")
+  credentialID      String?
+  credential        Credential?  @relation(fields: [credentialID], references: [id])
 }
 
 model Connection {
   id         String   @id @default(cuid())
   workflowID String
   workflow   Workflow @relation(fields: [workflowID], references: [id], onDelete: Cascade)
-
   fromNodeID String
-  fromNode   Node   @relation("FromNode", fields: [fromNodeID], references: [id], onDelete: Cascade)
-
-  toNodeID String
-  toNode   Node   @relation("ToNode", fields: [toNodeID], references: [id], onDelete: Cascade)
-
-  fromOutput String @default("main")
-  toInput    String @default("main")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  fromNode   Node     @relation("FromNode", fields: [fromNodeID], references: [id], onDelete: Cascade)
+  toNodeID   String
+  toNode     Node     @relation("ToNode", fields: [toNodeID], references: [id], onDelete: Cascade)
+  fromOutput String   @default("main")
+  toInput    String   @default("main")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@unique([fromNodeID, toNodeID, fromOutput, toInput])
+}
+
+model Credential {
+  id        String         @id @default(cuid())
+  name      String
+  value     String
+  type      CredentialType
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Node      Node[]
+}
+
+enum CredentialType {
+  OPENAI
+  ANTHROPIC
+  GOOGLE_GEMINI
 }

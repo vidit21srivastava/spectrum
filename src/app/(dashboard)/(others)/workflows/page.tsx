@@ -3,9 +3,9 @@ import {
     WorkflowsError,
     WorkflowsList,
     WorkflowsLoading
-} from "@/app/features/workflows/components/workflows";
-import { workflowsParamsLoader } from "@/app/features/workflows/server/params-loader";
-import { prefetchWorkflows } from "@/app/features/workflows/server/prefetch";
+} from "@/features/workflows/components/workflows";
+import { workflowsParamsLoader } from "@/features/workflows/server/params-loader";
+import { prefetchWorkflows } from "@/features/workflows/server/prefetch";
 import { requireAuth } from "@/lib/auth-utils";
 import { HydrateClient } from "@/trpc/server";
 import type { SearchParams } from "nuqs";
