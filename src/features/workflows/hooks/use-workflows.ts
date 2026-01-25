@@ -1,4 +1,3 @@
-/* eslint-disable*/
 import { useTRPC } from "@/trpc/client"
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -36,7 +35,7 @@ export const useCreateWorkflow = () => {
             },
         })
     )
-}
+};
 
 //Hook to remove a workflow
 
@@ -94,7 +93,7 @@ export const useUpdateWorkflowName = () => {
             },
         })
     )
-}
+};
 
 //Hook to update a workflow 
 
@@ -120,7 +119,7 @@ export const useUpdateWorkflow = () => {
             },
         })
     )
-}
+};
 
 
 //Hook to execute a workflow 
@@ -139,4 +138,4 @@ export const useExecuteWorkflow = () => {
             },
         })
     )
-}
+};
