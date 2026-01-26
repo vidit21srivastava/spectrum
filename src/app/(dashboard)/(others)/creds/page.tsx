@@ -1,6 +1,11 @@
 import { requireAuth } from "@/lib/auth-utils";
+import { SearchParams } from "nuqs";
 
-const Page = async () => {
+type Props = {
+    searchParams: Promise<SearchParams>;
+}
+
+const Page = async ({ searchParams }: Props) => {
 
     await requireAuth();
     return (
