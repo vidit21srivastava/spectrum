@@ -17,7 +17,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useCredentialsParams } from "../hooks/use-credentials-params";
 import { useRemoveCredential, useSuspenseCredentials } from "../hooks/use-credentials";
 import type { Credential } from "@/generated/prisma";
-import { KeyRound } from "lucide-react";
+import { BookKey, KeyRound } from "lucide-react";
 
 
 export const CredentialsSearch = () => {
@@ -111,7 +111,7 @@ export const CredentialsEmpty = () => {
     };
 
     return (
-        <EmptyView onNew={handleCreate}
+        <EmptyView icon={BookKey} title="No Credentials" newButtonLabel="Add Credential" onNew={handleCreate}
             message="No credentials found. Get started by creating your credential." />
     );
 };
@@ -126,7 +126,7 @@ export const CredentialsItem = ({ data }: { data: Credential }) => {
 
     return (
         <EntityItem
-            href={`/crdentials/${data.id}`}
+            href={`/credentials/new`}
             title={data.name}
             subtitle={
                 <>

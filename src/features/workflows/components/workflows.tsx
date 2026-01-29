@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useWorkflowsParams } from "../hooks/use-workflows-params";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 import type { Workflow } from "@/generated/prisma";
-import { WorkflowIcon } from "lucide-react";
+import { PackageOpenIcon, WorkflowIcon } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 
@@ -157,7 +157,7 @@ export const WorkflowsEmpty = () => {
     return (
         <>
             {modal}
-            <EmptyView onNew={handleCreate}
+            <EmptyView icon={PackageOpenIcon} title="No Workflows" newButtonLabel="Add Workflow" onNew={handleCreate}
                 message="No workflows found. Get started by creating your workflow." />
         </>
     );
