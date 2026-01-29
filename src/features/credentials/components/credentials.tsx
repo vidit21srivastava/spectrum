@@ -10,14 +10,15 @@ import {
     ErrorView,
     LoadingView
 } from "@/components/entity-components";
-import { useUpgradeModal } from "../../../hooks/use-upgrade-modal";
 import { useRouter } from "next/navigation";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 import { formatDistanceToNow } from "date-fns";
 import { useCredentialsParams } from "../hooks/use-credentials-params";
-import { useRemoveCredential, useSuspenseCredentials } from "../hooks/use-credentials";
-import type { Credential } from "@/generated/prisma";
+import { useRemoveCredential, useSuspenseCredential, useSuspenseCredentials } from "../hooks/use-credentials";
+import { type Credential, CredentialType } from "@/generated/prisma";
 import { BookKey, KeyRound } from "lucide-react";
+import Image from "next/image";
+import { CredentialForm } from "./credential-form";
 
 
 export const CredentialsSearch = () => {
@@ -116,6 +117,12 @@ export const CredentialsEmpty = () => {
     );
 };
 
+const credentialLogos: Record<CredentialType, string> = {
+    [CredentialType.OPENAI]: "/openai.svg",
+    [CredentialType.ANTHROPIC]: "/anthropic.svg",
+    [CredentialType.GOOGLE_GEMINI]: "/gemini.svg",
+}
+
 export const CredentialsItem = ({ data }: { data: Credential }) => {
 
     const removeCredential = useRemoveCredential();
@@ -124,9 +131,11 @@ export const CredentialsItem = ({ data }: { data: Credential }) => {
         removeCredential.mutate({ id: data.id })
     }
 
+    const logo = credentialLogos[data.type] ?? KeyRound;
+
     return (
         <EntityItem
-            href={`/credentials/new`}
+            href={`/credentials/${data.id}`}
             title={data.name}
             subtitle={
                 <>
@@ -138,7 +147,7 @@ export const CredentialsItem = ({ data }: { data: Credential }) => {
             image={
                 //TODO
                 <div className="size-8 flex items-center justify-center">
-                    <KeyRound className="size-5 text-muted-foreground" />
+                    <Image src={logo} alt={data.type} width={20} height={20} />
                 </div>
             }
             onRemove={handleRemove}
@@ -146,3 +155,10 @@ export const CredentialsItem = ({ data }: { data: Credential }) => {
         />
     );
 };
+
+export const CredentialView = ({ credentialID }: { credentialID: string }) => {
+
+    const { data: credential } = useSuspenseCredential(credentialID);
+
+    return <CredentialForm initialData={credential} />;
+}
