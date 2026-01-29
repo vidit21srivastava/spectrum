@@ -1,4 +1,4 @@
-import { AlertTriangleIcon, Loader2Icon, MoreVerticalIcon, PackageOpenIcon, PlusIcon, SearchIcon, TrashIcon } from "lucide-react";
+import { AlertTriangleIcon, Loader2Icon, LucideIcon, MoreVerticalIcon, PackageOpenIcon, PlusIcon, SearchIcon, TrashIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Input } from "./ui/input";
@@ -208,19 +208,23 @@ export const ErrorView = ({ message }: StateViewProps) => {
 };
 
 interface EmptyViewProps extends StateViewProps {
+    icon: LucideIcon | string;
+    title: string;
+    newButtonLabel: string;
     onNew?: () => void;
 }
 
-export const EmptyView = ({ message, onNew }: EmptyViewProps) => {
+export const EmptyView = ({ icon: Icon, title, newButtonLabel, message, onNew }: EmptyViewProps) => {
     return (
         <Empty className="border border-dashed bg-white">
             <EmptyHeader>
                 <EmptyMedia variant="icon" className="bg-inherit">
-                    <PackageOpenIcon className="size-8 text-muted-foreground" />
+                    {/* <PackageOpenIcon className="size-8 text-muted-foreground" /> */}
+                    {<Icon className="size-8 text-muted-foreground" />}
                 </EmptyMedia>
             </EmptyHeader>
             <EmptyTitle className="text-muted-foreground">
-                No Workflows
+                {title}
             </EmptyTitle>
             {Boolean(message) && (
                 <EmptyDescription>
@@ -230,7 +234,7 @@ export const EmptyView = ({ message, onNew }: EmptyViewProps) => {
             {Boolean(onNew) && (
                 <EmptyContent>
                     <Button onClick={onNew}>
-                        Add Workflow
+                        {newButtonLabel}
                     </Button>
                 </EmptyContent>
             )}

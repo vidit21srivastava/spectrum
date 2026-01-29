@@ -38,7 +38,7 @@ const menuItems = [
             {
                 title: "Credentials",
                 icon: KeyIcon,
-                url: "/creds",
+                url: "/credentials",
             },
             {
                 title: "Executions",
