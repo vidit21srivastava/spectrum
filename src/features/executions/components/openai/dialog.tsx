@@ -34,6 +34,8 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useCredentialsByType } from "@/features/credentials/hooks/use-credentials";
+import { CredentialType } from "@/generated/prisma";
 
 export const AVAILABLE_MODELS = [
     "gpt-5.2-pro",
@@ -53,6 +55,7 @@ const formSchema = z.object({
         .min(1, { message: "Variable name is required" })
         .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/,
             { message: "Variable name must start with a letter or underscore and must contain only letters, numbers, and underscores." }),
+    credentialID: z.string().min(1, "Credential is required"),
     model: z.enum(AVAILABLE_MODELS),
     systemPrompt: z.string().optional(),
     userPrompt: z.string().min(1, "User prompt is required"),
@@ -73,11 +76,15 @@ export const OpenAIDialog = ({
     onSubmit,
     defaultValues = {},
 }: OpenAIDialogProps) => {
+    const { data: credentials,
+        isLoading: isLoadingCredentials
+    } = useCredentialsByType(CredentialType.OPENAI);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             variableName: defaultValues.variableName || "",
+            credentialID: defaultValues.credentialID || "",
             model: defaultValues.model || AVAILABLE_MODELS[0],
             systemPrompt: defaultValues.systemPrompt || "",
             userPrompt: defaultValues.userPrompt || "",
@@ -90,6 +97,7 @@ export const OpenAIDialog = ({
         if (open) {
             form.reset({
                 variableName: defaultValues.variableName || "",
+                credentialID: defaultValues.credentialID || "",
                 model: defaultValues.model || AVAILABLE_MODELS[0],
                 systemPrompt: defaultValues.systemPrompt || "",
                 userPrompt: defaultValues.userPrompt || "",
@@ -162,6 +170,47 @@ export const OpenAIDialog = ({
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                control={form.control}
+                                name="credentialID"
+                                render={
+                                    ({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Select Credential</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                                disabled={isLoadingCredentials || !credentials?.length}>
+                                                <FormControl>
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="select" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {credentials?.map((option) => (
+                                                        <SelectItem
+                                                            key={option.id}
+                                                            value={option.id}
+                                                        >
+                                                            <div className="flex items-center gap-2">
+                                                                <Image
+                                                                    src="/openai.svg"
+                                                                    alt="openai"
+                                                                    width={16}
+                                                                    height={16}
+                                                                />
+                                                                {option.name}
+                                                            </div>
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )
+                                }
+                            />
+
 
                             <FormField
                                 control={form.control}

@@ -10,6 +10,7 @@ import { GOOGLE_GEMINI_CHANNEL_NAME } from "@/inngest/channels/google-gemini";
 
 type GoogleGeminiNodeData = {
     variableName?: string;
+    credentialID?: string;
     model?: GoogleGeminiFormValues["model"];
     systemPrompt?: string;
     userPrompt?: string;

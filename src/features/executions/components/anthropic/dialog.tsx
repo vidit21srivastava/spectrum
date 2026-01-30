@@ -34,6 +34,8 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { CredentialType } from "@/generated/prisma";
+import { useCredentialsByType } from "@/features/credentials/hooks/use-credentials";
 
 export const AVAILABLE_MODELS = [
     "claude-sonnet-4-5-20250929",
@@ -48,6 +50,7 @@ const formSchema = z.object({
         .min(1, { message: "Variable name is required" })
         .regex(/^[A-Za-z_$][A-Za-z0-9_$]*$/,
             { message: "Variable name must start with a letter or underscore and must contain only letters, numbers, and underscores." }),
+    credentialID: z.string().min(1, "Credential is required"),
     model: z.enum(AVAILABLE_MODELS),
     systemPrompt: z.string().optional(),
     userPrompt: z.string().min(1, "User prompt is required"),
@@ -68,11 +71,15 @@ export const AnthropicDialog = ({
     onSubmit,
     defaultValues = {},
 }: AnthropicDialogProps) => {
+    const { data: credentials,
+        isLoading: isLoadingCredentials
+    } = useCredentialsByType(CredentialType.ANTHROPIC);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             variableName: defaultValues.variableName || "",
+            credentialID: defaultValues.credentialID || "",
             model: defaultValues.model || AVAILABLE_MODELS[0],
             systemPrompt: defaultValues.systemPrompt || "",
             userPrompt: defaultValues.userPrompt || "",
@@ -85,6 +92,7 @@ export const AnthropicDialog = ({
         if (open) {
             form.reset({
                 variableName: defaultValues.variableName || "",
+                credentialID: defaultValues.credentialID || "",
                 model: defaultValues.model || AVAILABLE_MODELS[0],
                 systemPrompt: defaultValues.systemPrompt || "",
                 userPrompt: defaultValues.userPrompt || "",
@@ -156,6 +164,47 @@ export const AnthropicDialog = ({
                                         <FormMessage />
                                     </FormItem>
                                 )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="credentialID"
+                                render={
+                                    ({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Select Credential</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                                disabled={isLoadingCredentials || !credentials?.length}>
+                                                <FormControl>
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="select" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {credentials?.map((option) => (
+                                                        <SelectItem
+                                                            key={option.id}
+                                                            value={option.id}
+                                                        >
+                                                            <div className="flex items-center gap-2">
+                                                                <Image
+                                                                    src="/anthropic.svg"
+                                                                    alt="Anthropic"
+                                                                    width={16}
+                                                                    height={16}
+                                                                />
+                                                                {option.name}
+                                                            </div>
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )
+                                }
                             />
 
                             <FormField
