@@ -205,6 +205,9 @@ export const OpenAIDialog = ({
                                                     ))}
                                                 </SelectContent>
                                             </Select>
+                                            <FormDescription>
+                                                Credential to be used for action
+                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )

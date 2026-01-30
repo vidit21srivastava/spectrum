@@ -201,6 +201,9 @@ export const GoogleGeminiDialog = ({
                                                     ))}
                                                 </SelectContent>
                                             </Select>
+                                            <FormDescription>
+                                                Credential to be used for action
+                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )
