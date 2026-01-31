@@ -25,6 +25,7 @@ export const googleGeminiExecutor: NodeExecutor<googleGeminiData> = async (
     {
         data,
         nodeID,
+        userID,
         context,
         step,
         publish,
@@ -71,11 +72,18 @@ export const googleGeminiExecutor: NodeExecutor<googleGeminiData> = async (
         return prisma.credential.findUnique({
             where: {
                 id: data.credentialID,
+                userId: userID,
             },
         })
     })
 
     if (!credential) {
+        await publish(
+            googleGeminiChannel().status({
+                nodeID,
+                status: "error"
+            })
+        );
 
         throw new NonRetriableError("Gemini node: Credential not found");
     }

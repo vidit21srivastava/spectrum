@@ -53,6 +53,18 @@ export const executeWorkflow = inngest.createFunction(
             return topologicalSort(workflow.nodes, workflow.connections);
         });
 
+        const userID = await step.run("find-user-id", async () => {
+            const workflow = await prisma.workflow.findUniqueOrThrow({
+                where: {
+                    id: workflowID,
+                },
+                select: {
+                    userId: true,
+                }
+            });
+
+            return workflow.userId;
+        })
         // Initializing the context with any initial data  from the trigger.
 
         let context = event.data.initialData || {};
@@ -62,6 +74,7 @@ export const executeWorkflow = inngest.createFunction(
             context = await executor({
                 data: node.data as Record<string, unknown>,
                 nodeID: node.id,
+                userID,
                 context,
                 step,
                 publish,
