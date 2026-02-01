@@ -9,6 +9,7 @@ import { PaymentTriggerNode } from "@/features/triggers/components/pg-trigger/no
 import { InitialNode } from "@/components/initial-node";
 import { NodeType } from "@/generated/prisma";
 import type { NodeTypes } from "@xyflow/react";
+import { DiscordNode } from "@/features/executions/components/discord/node";
 
 export const nodeComponents = {
     [NodeType.INITIAL]: InitialNode,
@@ -20,6 +21,7 @@ export const nodeComponents = {
     [NodeType.GOOGLE_GEMINI]: GoogleGeminiNode,
     [NodeType.OPENAI]: OpenAINode,
     [NodeType.ANTHROPIC]: AnthropicNode,
+    [NodeType.DISCORD]: DiscordNode,
 } as const satisfies NodeTypes;
 
 export type RegisteredNodeType = keyof typeof nodeComponents;

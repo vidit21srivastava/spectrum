@@ -8,6 +8,7 @@ import { paypalTriggerExecutor } from "../../triggers/components/paypal-trigger/
 import { googleGeminiExecutor } from "../components/google-gemini/executor";
 import { OpenAIExecutor } from "../components/openai/executor";
 import { anthropicExecutor } from "../components/anthropic/executor";
+import { DiscordExecutor } from "../components/discord/executor";
 
 export const executorRegistry: Record<NodeType, NodeExecutor> = {
     [NodeType.INITIAL]: manualTriggerExecutor,
@@ -19,6 +20,8 @@ export const executorRegistry: Record<NodeType, NodeExecutor> = {
     [NodeType.GOOGLE_GEMINI]: googleGeminiExecutor,
     [NodeType.ANTHROPIC]: anthropicExecutor,
     [NodeType.OPENAI]: OpenAIExecutor,
+    [NodeType.DISCORD]: DiscordExecutor,
+    [NodeType.SLACK]: DiscordExecutor, // todo
 };
 
 export const getExecutor = (type: NodeType): NodeExecutor => {

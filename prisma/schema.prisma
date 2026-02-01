@@ -97,6 +97,8 @@ enum NodeType {
   ANTHROPIC
   GOOGLE_GEMINI
   OPENAI
+  DISCORD
+  SLACK
 }
 
 model Node {

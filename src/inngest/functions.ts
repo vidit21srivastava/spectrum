@@ -12,6 +12,7 @@ import { paypalTriggerChannel } from "./channels/paypal-trigger";
 import { googleGeminiChannel } from "./channels/google-gemini";
 import { openaiChannel } from "./channels/openai";
 import { anthropicChannel } from "./channels/anthropic";
+import { discordChannel } from "./channels/discord";
 
 
 export const executeWorkflow = inngest.createFunction(
@@ -30,6 +31,7 @@ export const executeWorkflow = inngest.createFunction(
             googleGeminiChannel(),
             openaiChannel(),
             anthropicChannel(),
+            discordChannel(),
         ]
     },
     async ({ event, step, publish }) => {
