@@ -31,7 +31,7 @@ import React from "react";
 type EntityHeaderProps = {
     title: string;
     description?: string;
-    newButtonLabel: string;
+    newButtonLabel?: string;
     disabled?: boolean;
     isCreating?: boolean;
 } & (
@@ -210,7 +210,7 @@ export const ErrorView = ({ message }: StateViewProps) => {
 interface EmptyViewProps extends StateViewProps {
     icon: LucideIcon | string;
     title: string;
-    newButtonLabel: string;
+    newButtonLabel?: string;
     onNew?: () => void;
 }
 

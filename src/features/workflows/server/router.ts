@@ -9,10 +9,9 @@ import { generateSlug } from "random-word-slugs";
 import { z } from "zod";
 import { PAGINATION } from "@/config/constants";
 import { NodeType } from "@/generated/prisma";
-import { inngest } from "@/inngest/client";
 import { sendWorkflowExecution } from "@/inngest/utils";
 
-export const workflowRouter = createTRPCRouter({
+export const workflowsRouter = createTRPCRouter({
     execute: protectedProcedure
         .input(z.object({ id: z.string() }))
         .mutation(async ({ input, ctx }) => {

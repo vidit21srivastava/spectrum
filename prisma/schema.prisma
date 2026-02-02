@@ -85,6 +85,7 @@ model Workflow {
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   nodes       Node[]
   connections Connection[]
+  executions  Execution[]
 }
 
 enum NodeType {
@@ -149,4 +150,23 @@ enum CredentialType {
   OPENAI
   ANTHROPIC
   GOOGLE_GEMINI
+}
+
+enum ExecutionStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+model Execution {
+  id             String          @id @default(cuid())
+  startedAt      DateTime        @default(now())
+  completedAt    DateTime?
+  inngestEventID String          @unique
+  output         Json?
+  workflow       Workflow        @relation(fields: [workflowID], references: [id], onDelete: Cascade)
+  workflowID     String
+  status         ExecutionStatus @default(RUNNING)
+  error          String?         @db.Text
+  errorStack     String?         @db.Text
 }

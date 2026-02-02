@@ -48,7 +48,7 @@ export const CredentialsList = () => {
     return (
         <EntityList
             items={credentials.data.items}
-            getKey={(crdential) => crdential.id}
+            getKey={(credential) => credential.id}
             renderItem={(credential) => (<CredentialsItem data={credential} />)}
             emptyView={<CredentialsEmpty />}
         />

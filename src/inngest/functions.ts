@@ -1,8 +1,8 @@
-import { NonRetriableError } from "inngest";
+import { NonRetriableError, step } from "inngest";
 import { inngest } from "./client";
 import prisma from "@/lib/db";
 import { topologicalSort } from "./utils";
-import { NodeType } from "@/generated/prisma";
+import { ExecutionStatus, NodeType } from "@/generated/prisma";
 import { getExecutor } from "@/features/executions/lib/executor-registry";
 import { httpRequestChannel } from "./channels/http-request";
 import { manualTriggerChannel } from "./channels/manual-trigger";
@@ -19,7 +19,17 @@ import { slackChannel } from "./channels/slack";
 export const executeWorkflow = inngest.createFunction(
     {
         id: "execute-workflow",
-        retries: 0 // trial only
+        retries: 0, // trial only
+        onFailure: async ({ event }) => {
+            return prisma.execution.update({
+                where: { inngestEventID: event.data.event.id },
+                data: {
+                    status: ExecutionStatus.FAILED,
+                    error: event.data.error.message,
+                    errorStack: event.data.error.stack
+                },
+            });
+        }
     },
     {
         event: "workflows/execute.workflow",
@@ -38,10 +48,21 @@ export const executeWorkflow = inngest.createFunction(
     },
     async ({ event, step, publish }) => {
 
+        const inngestEventID = event.id;
+
         const workflowID = event.data.workflowID;
-        if (!workflowID) {
-            throw new NonRetriableError("Workflow ID is missing");
+        if (!inngestEventID || !workflowID) {
+            throw new NonRetriableError("Event ID or Workflow ID is missing");
         }
+
+        await step.run("create-execution-history", async () => {
+            return prisma.execution.create({
+                data: {
+                    workflowID,
+                    inngestEventID,
+                },
+            });
+        });
 
         const sortedNodes = await step.run("prepare-workflow", async () => {
             const workflow = await prisma.workflow.findUniqueOrThrow({
@@ -84,6 +105,17 @@ export const executeWorkflow = inngest.createFunction(
                 publish,
             })
         }
+
+        await step.run("update-execution-history", async () => {
+            return prisma.execution.update({
+                where: { inngestEventID },
+                data: {
+                    status: ExecutionStatus.SUCCESS,
+                    completedAt: new Date(),
+                    output: context,
+                },
+            });
+        });
 
         return {
             workflowID,
