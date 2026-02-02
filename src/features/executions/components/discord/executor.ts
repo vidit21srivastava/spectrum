@@ -24,7 +24,6 @@ export const DiscordExecutor: NodeExecutor<DiscordData> = async (
     {
         data,
         nodeID,
-        userID,
         context,
         step,
         publish,

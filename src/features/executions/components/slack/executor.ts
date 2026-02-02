@@ -1,11 +1,9 @@
 import type { NodeExecutor } from "@/features/executions/types";
 import { NonRetriableError } from "inngest";
-import { generateText } from "ai";
-import { createAnthropic } from "@ai-sdk/anthropic";
 import Handlebars from "handlebars";
-import { AnthropicFormValues } from "./dialog";
-import { anthropicChannel } from "@/inngest/channels/anthropic";
-import prisma from "@/lib/db";
+import { decode } from "html-entities";
+import ky from "ky";
+import { slackChannel } from "@/inngest/channels/slack";
 
 
 Handlebars.registerHelper("JSON", (context) => {
@@ -14,126 +12,94 @@ Handlebars.registerHelper("JSON", (context) => {
     return safeString;
 });
 
-type AnthropicData = {
+type SlackData = {
     variableName?: string;
-    credentialID?: string;
-    model?: AnthropicFormValues["model"];
-    systemPrompt?: string;
-    userPrompt?: string;
+    webhookURL?: string;
+    content?: string;
+
 };
 
-export const anthropicExecutor: NodeExecutor<AnthropicData> = async (
+export const SlackExecutor: NodeExecutor<SlackData> = async (
     {
         data,
         nodeID,
-        userID,
         context,
         step,
         publish,
     }
 ) => {
     await publish(
-        anthropicChannel().status({
+        slackChannel().status({
             nodeID,
             status: "loading"
         })
     );
 
-    if (!data.variableName) {
+    if (!data.content) {
         await publish(
-            anthropicChannel().status({
+            slackChannel().status({
                 nodeID,
                 status: "error"
             })
         );
-        throw new NonRetriableError("Anthropic node: Variable name is missing");
+        throw new NonRetriableError("Slack node: Message content is required");
     }
 
-    if (!data.userPrompt) {
-        await publish(
-            anthropicChannel().status({
-                nodeID,
-                status: "error"
-            })
-        );
-        throw new NonRetriableError("Anthropic node: User prompt is missing");
-    }
+    const rawContent = Handlebars.compile(data.content)(context);
+    const content = decode(rawContent);
 
-    if (!data.credentialID) {
-        await publish(
-            anthropicChannel().status({
-                nodeID,
-                status: "error"
-            })
-        );
-        throw new NonRetriableError("Anthropic node: Credential is missing");
-    }
-
-    const credential = await step.run("get-credential", () => {
-        return prisma.credential.findUnique({
-            where: {
-                id: data.credentialID,
-                userId: userID,
-            },
-        })
-    })
-
-    if (!credential) {
-        await publish(
-            anthropicChannel().status({
-                nodeID,
-                status: "error"
-            })
-        );
-
-        throw new NonRetriableError("Anthropic node: Credential not found");
-    }
-
-    const systemPrompt = data.systemPrompt
-        ? Handlebars.compile(data.systemPrompt)(context) : "You are a helpful assistant.";
-    const userPrompt = Handlebars.compile(data.userPrompt)(context);
-
-
-    const anthropic = createAnthropic({
-        apiKey: credential.value,
-    });
 
     try {
-        const { steps } = await step.ai.wrap("anthropic-generate-text",
-            generateText,
-            {
-                model: anthropic(data.model || "claude-sonnet-4-5-20250929"),
-                system: systemPrompt,
-                prompt: userPrompt,
-                experimental_telemetry: {
-                    isEnabled: true,
-                    recordInputs: true,
-                    recordOutputs: true,
-                },//sentry
-            },
-        );
+        const result = await step.run("slack-webhook", async () => {
+            if (!data.variableName) {
+                await publish(
+                    slackChannel().status({
+                        nodeID,
+                        status: "error"
+                    })
+                );
+                throw new NonRetriableError("Slack node: Variable name is missing");
+            }
 
-        const text = steps[0].content[0].type === "text"
-            ? steps[0].content[0].text
-            : "";
+            if (!data.webhookURL) {
+                await publish(
+                    slackChannel().status({
+                        nodeID,
+                        status: "error"
+                    })
+                );
+                throw new NonRetriableError("Slack node: Webhook URL is missing");
+            }
+
+            await ky.post(data.webhookURL!, {
+                json: {
+                    content: content, // key depends on webhook config
+
+                }
+            });
+
+            return {
+                ...context,
+                [data.variableName]: {
+                    messageContent: content,
+                }
+
+            };
+        });
+
 
         await publish(
-            anthropicChannel().status({
+            slackChannel().status({
                 nodeID,
                 status: "success"
             })
         );
 
 
-        return {
-            ...context,
-            [data.variableName]: {
-                text,
-            },
-        };
+        return result;
     } catch (error) {
         await publish(
-            anthropicChannel().status({
+            slackChannel().status({
                 nodeID,
                 status: "error"
             })

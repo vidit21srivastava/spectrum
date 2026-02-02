@@ -27,12 +27,6 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
-export const AVAILABLE_MODELS = [
-    "claude-sonnet-4-5-20250929",
-    "claude-haiku-4-5-20251001",
-    "claude-opus-4-5-20251101",
-] as const;
-
 
 const formSchema = z.object({
     variableName: z
@@ -188,8 +182,9 @@ export const DiscordDialog = ({
                                                 {...field}
                                             />
                                         </FormControl>
+                                        {/* To change */}
                                         <FormDescription>
-                                            The prompt to send to the AI for action. Use {"{{variables}}"} for simple values or {"{{JSON variable}}"} to stringify objects.
+                                            Message content to send to discord. Use {"{{variables}}"} for simple values or {"{{JSON variable}}"} to stringify objects.
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>

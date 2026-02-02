@@ -2,16 +2,16 @@
 
 import { getSubscriptionToken, type Realtime } from "@inngest/realtime";
 import { inngest } from "@/inngest/client";
-import { anthropicChannel } from "@/inngest/channels/anthropic";
+import { slackChannel } from "@/inngest/channels/slack";
 
-export type AnthropicToken = Realtime.Token<
-    typeof anthropicChannel,
+export type SlackToken = Realtime.Token<
+    typeof slackChannel,
     ["status"]
 >;
 
-export async function fetchAnthropicRealtimeToken(): Promise<AnthropicToken> {
+export async function fetchSlackRealtimeToken(): Promise<SlackToken> {
     const token = await getSubscriptionToken(inngest, {
-        channel: anthropicChannel(),
+        channel: slackChannel(),
         topics: ["status"],
     });
 
