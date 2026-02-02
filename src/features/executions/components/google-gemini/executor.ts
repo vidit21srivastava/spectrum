@@ -6,6 +6,7 @@ import Handlebars from "handlebars";
 import { googleGeminiChannel } from "@/inngest/channels/google-gemini";
 import { GoogleGeminiFormValues } from "./dialog";
 import prisma from "@/lib/db";
+import { decrypt } from "@/lib/encryption";
 
 Handlebars.registerHelper("JSON", (context) => {
     const jsonString = JSON.stringify(context, null, 2);
@@ -94,7 +95,7 @@ export const googleGeminiExecutor: NodeExecutor<googleGeminiData> = async (
 
 
     const google = createGoogleGenerativeAI({
-        apiKey: credential.value,
+        apiKey: decrypt(credential.value),
     });
 
     try {
