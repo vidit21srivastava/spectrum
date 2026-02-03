@@ -36,7 +36,7 @@ export const sendEmail = async ({ to, subject, text, html }: SendEmailInput) => 
         return;
     }
 
-    const from = process.env.EMAIL_FROM ?? "no-reply@spectrum.app";
+    const from = process.env.EMAIL_FROM ?? "team.spectrum.noreply@gmail.com";
 
     await transporter.sendMail({
         from,
