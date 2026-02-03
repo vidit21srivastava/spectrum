@@ -11,13 +11,13 @@ import {
     LoadingView
 } from "@/components/entity-components";
 import { useCreateWorkflow, useRemoveWorkflow, useSuspenseWorkflows } from "../hooks/use-workflows"
-import { useUpgradeModal } from "../../../hooks/use-upgrade-modal";
 import { useRouter } from "next/navigation";
 import { useWorkflowsParams } from "../hooks/use-workflows-params";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 import type { Workflow } from "@/generated/prisma";
 import { PackageOpenIcon, WorkflowIcon } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { toast } from "sonner";
 
 
 export const WorkflowsSearch = () => {
@@ -71,7 +71,6 @@ export const WorkflowsList = () => {
 export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
     const router = useRouter();
     const createWorkflow = useCreateWorkflow();
-    const { handleError, modal } = useUpgradeModal();
 
     const handleCreate = () => {
         createWorkflow.mutate(undefined, {
@@ -80,7 +79,7 @@ export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
 
             },
             onError: (error) => {
-                handleError(error);
+                toast.error(error.message);
             },
         });
     };
@@ -88,16 +87,13 @@ export const WorkflowsHeader = ({ disabled }: { disabled?: boolean }) => {
 
 
     return (
-        <>
-            {modal}
-            <EntityHeader
-                title="Workflows"
-                description="Create and manage your workflows"
-                onNew={handleCreate}
-                newButtonLabel="New Workflow"
-                disabled={disabled}
-                isCreating={createWorkflow.isPending} />
-        </>
+        <EntityHeader
+            title="Workflows"
+            description="Create and manage your workflows"
+            onNew={handleCreate}
+            newButtonLabel="New Workflow"
+            disabled={disabled}
+            isCreating={createWorkflow.isPending} />
     );
 };
 
@@ -141,12 +137,11 @@ export const WorkflowsError = () => {
 export const WorkflowsEmpty = () => {
     const router = useRouter();
     const createWorkflow = useCreateWorkflow();
-    const { handleError, modal } = useUpgradeModal();
 
     const handleCreate = () => {
         createWorkflow.mutate(undefined, {
             onError: (error) => {
-                handleError(error);
+                toast.error(error.message);
             },
             onSuccess: (data) => {
                 router.push(`/workflows/${data.id}`);
@@ -155,11 +150,8 @@ export const WorkflowsEmpty = () => {
     };
 
     return (
-        <>
-            {modal}
-            <EmptyView icon={PackageOpenIcon} title="No Workflows" newButtonLabel="Add Workflow" onNew={handleCreate}
-                message="No workflows found. Get started by creating your workflow." />
-        </>
+        <EmptyView icon={PackageOpenIcon} title="No Workflows" newButtonLabel="Add Workflow" onNew={handleCreate}
+            message="No workflows found. Get started by creating your workflow." />
     );
 };
 

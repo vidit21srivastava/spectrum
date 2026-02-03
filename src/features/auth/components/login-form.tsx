@@ -90,6 +90,29 @@ export function LoginForm() {
         })
     };
 
+    const resendVerification = async () => {
+        const email = form.getValues("email").trim();
+        if (!email) {
+            toast.error("Enter your email to resend verification.");
+            return;
+        }
+
+        await authClient.sendVerificationEmail(
+            {
+                email,
+                callbackURL: "/",
+            },
+            {
+                onSuccess: () => {
+                    toast.success("Verification email sent.");
+                },
+                onError: (ctx) => {
+                    toast.error(ctx.error.message);
+                },
+            }
+        );
+    };
+
     const isPending = form.formState.isSubmitting;
 
     return (
@@ -147,6 +170,23 @@ export function LoginForm() {
                                                 <FormMessage />
                                             </FormItem>
                                         )} />
+                                    <div className="flex items-center justify-between text-sm">
+                                        <Link
+                                            href="/forgot-password"
+                                            className="underline underline-offset-4 text-primary"
+                                        >
+                                            Forgot Password?
+                                        </Link>
+                                        <Button
+                                            type="button"
+                                            variant="link"
+                                            className="h-auto w-fit p-0 text-sm text-primary underline underline-offset-4"
+                                            onClick={resendVerification}
+                                            disabled={isPending}
+                                        >
+                                            Verify Email
+                                        </Button>
+                                    </div>
                                     <Button type="submit" className="w-full" disabled={isPending}>
                                         Login
                                     </Button>
