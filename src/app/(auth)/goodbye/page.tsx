@@ -13,7 +13,7 @@ const Page = () => {
         <div className="flex flex-col gap-6">
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle>Account deleted</CardTitle>
+                    <CardTitle>Account Deleted</CardTitle>
                     <CardDescription>
                         Your account and data have been removed.
                     </CardDescription>
@@ -23,7 +23,7 @@ const Page = () => {
                         If this was a mistake, you can create a new account any time.
                     </p>
                     <Button asChild className="w-full">
-                        <Link href="/signup">Create a new account</Link>
+                        <Link href="/signup">Create a New Account</Link>
                     </Button>
                 </CardContent>
             </Card>
