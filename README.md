@@ -3,15 +3,15 @@
 Spectrum is a self-hosted workflow automation platform built with Next.js, tRPC, Prisma, AI SDK, and Inngest. It allows users to create, manage, and execute complex workflows with various triggers, actions, and AI integrations.
 
 Editor
-![alt text](<Screenshot from 2026-02-05 01-59-46.png>)
+![alt text](<./public/images/Screenshot from 2026-02-05 01-59-46.png>)
 Node Selector
-![alt text](<Screenshot from 2026-02-05 02-52-40.png>)
+![alt text](<./public/images/Screenshot from 2026-02-05 02-52-40.png>)
 Credentials
-![alt text](<Screenshot from 2026-02-05 02-17-46.png>)
-Execution Status ![alt text](<Screenshot from 2026-02-05 02-16-54.png>)
-Error Log ![alt text](<Screenshot from 2026-02-05 02-17-33.png>)
+![alt text](<./public/images/Screenshot from 2026-02-05 02-17-46.png>)
+Execution Status ![alt text](<./public/images/Screenshot from 2026-02-05 02-16-54.png>)
+Error Log ![alt text](<./public/images/Screenshot from 2026-02-05 02-17-33.png>)
 Output Log
- ![alt text](<Screenshot from 2026-02-05 02-16-37.png>) 
+ ![alt text](<./public/images/Screenshot from 2026-02-05 02-16-37.png>) 
 
 ## Features
 
